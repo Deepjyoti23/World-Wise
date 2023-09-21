@@ -75,7 +75,7 @@ function CitiesProvider({ children }) {
 
         const res = await fetch(`${BASE_URL}/cities`);
         const data = await res.json();
-        console.log(data)
+      
         //setCities(data)
         dispatch({ type: "cities/loaded", payload: data });
       } catch {
@@ -125,7 +125,6 @@ function CitiesProvider({ children }) {
         },
       });
       const data = await res.json();
-console.log(data)
       dispatch({ type: "city/created", payload: data });
       // setCities((cities) => [...cities, data]);
     } catch {
