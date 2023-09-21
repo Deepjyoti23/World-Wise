@@ -124,10 +124,17 @@ function CitiesProvider({ children }) {
           "Content-Type": "application/json",
         },
       });
+
+      if (!res.ok) {
+        throw new Error(`HTTP Error ${res.status}: ${res.statusText}`);
+      }
+
+      
       const data = await res.json();
       dispatch({ type: "city/created", payload: data });
       // setCities((cities) => [...cities, data]);
-    } catch {
+    } catch(error) {
+      console.error("Error creating the city:", error);
       dispatch({
         type: "rejected",
         payload: "There was an error creating the city...",
