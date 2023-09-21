@@ -90,7 +90,8 @@ function CitiesProvider({ children }) {
     fetchCities();
   }, []);
 
-    const getCity= useCallback( async function getCity(id) {
+  const getCity = useCallback(
+    async function getCity(id) {
       // console.log(id,currentCity.id)
       if (Number(id) === currentCity.id) return;
 
@@ -99,7 +100,7 @@ function CitiesProvider({ children }) {
       try {
         const res = await fetch(`${BASE_URL}/cities/${id}`);
         const data = await res.json();
-      // setCurrentCity(data)
+        // setCurrentCity(data)
         dispatch({ type: "city/loaded", payload: data });
       } catch {
         dispatch({
@@ -107,7 +108,9 @@ function CitiesProvider({ children }) {
           payload: "There was an error loading the city...",
         });
       }
-    },[currentCity.id])
+    },
+    [currentCity.id]
+  );
 
   async function createCity(newCity) {
     dispatch({ type: "loading" });
@@ -121,10 +124,9 @@ function CitiesProvider({ children }) {
         },
       });
       const data = await res.json();
-
+console.log(data)
       dispatch({ type: "city/created", payload: data });
       // setCities((cities) => [...cities, data]);
-
     } catch {
       dispatch({
         type: "rejected",
@@ -143,7 +145,6 @@ function CitiesProvider({ children }) {
 
       dispatch({ type: "city/deleted", payload: id });
       // setCities((cities) => cities.filter((city) => city.id !== id));
-
     } catch {
       dispatch({
         type: "rejected",
