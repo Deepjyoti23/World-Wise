@@ -66,30 +66,29 @@ function CitiesProvider({ children }) {
     initialState
   );
 
-  useEffect(function () {
-    async function fetchCities() {
-      dispatch({ type: "loading" });
+  const fetchCities = async () => {
+    dispatch({ type: "loading" });
 
-      try {
-        // setIsLoading(false)
+    try {
+      // setIsLoading(false)
 
-        const res = await fetch(`${BASE_URL}/cities`);
-        const data = await res.json();
-      
-        //setCities(data)
-        dispatch({ type: "cities/loaded", payload: data });
-      } catch {
-        dispatch({
-          type: "rejected",
-          payload: "There was an error loading cities...",
-        });
-      }
-      // }finally {
-      //   // throw new Error("not loading")
-      // }
+      const res = await fetch(`${BASE_URL}/cities`);
+      const data = await res.json();
+
+      //setCities(data)
+      dispatch({ type: "cities/loaded", payload: data });
+    } catch {
+      dispatch({
+        type: "rejected",
+        payload: "There was an error loading cities...",
+      });
     }
-    fetchCities();
-  }, []);
+  };
+
+  // useEffect(function () {
+
+  //   fetchCities();
+  // }, []);
 
   const getCity = useCallback(
     async function getCity(id) {
@@ -125,16 +124,11 @@ function CitiesProvider({ children }) {
         },
       });
 
-      if (!res.ok) {
-        throw new Error(`HTTP Error ${res.status}: ${res.statusText}`);
-      }
-
-      
       const data = await res.json();
       dispatch({ type: "city/created", payload: data });
       // setCities((cities) => [...cities, data]);
-    } catch(error) {
-      console.error("Error creating the city:", error);
+    } catch (error) {
+      fetchCities();
       dispatch({
         type: "rejected",
         payload: "There was an error creating the city...",
